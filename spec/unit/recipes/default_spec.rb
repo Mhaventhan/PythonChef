@@ -11,7 +11,7 @@ describe 'Python::default' do
     let(:chef_run) do
       # for a complete list of available platforms and versions see:
       # https://github.com/customink/fauxhai/blob/master/PLATFORMS.md
-      runner = ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+      runner = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04')
       runner.converge(described_recipe)
     end
 
@@ -19,18 +19,18 @@ describe 'Python::default' do
       expect { chef_run }.to_not raise_error
     end
     it 'updates all sources' do
-      expect(chef_run).to update_apt_update('update_sources')
+      expect(chef_run).to update_apt_update('update')
     end
 
-    it "should install Python" do
-      expect(chef_run).to include_package("python")
+    it "should install python" do
+      expect(chef_run).to install_package("python2.7")
     end
-    it "should install Python-pip" do
-      expect(chef_run).to include_package("python-pip")
+    it "should install python-pip" do
+      expect(chef_run).to install_package("python-pip")
     end
 
     it "should install libncurses5-dev" do
-      expect(chef_run).to include_package("libncurses5-dev")
+      expect(chef_run).to install_package("libncurses5-dev")
     end
   end
 end
